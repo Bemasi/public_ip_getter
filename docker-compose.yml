@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  bridge:
+    build: ./bridge
+    container_name: protonmail-bridge
+    volumes:
+      - bridge-config:/root/.config/protonmail
+    ports:
+      - "1143:1143"
+      - "1025:1025"
+    restart: unless-stopped
+
+  ip_replier:
+    build: ./replier
+    env_file: .env
+    depends_on:
+      - bridge
+    restart: unless-stopped
+
+volumes:
+  bridge-config:
